@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <title>빅맥 지수</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Lobster');
+
+        @import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
+
+        body {
+            background-color: #ec111e;
+        }
+
+        h1 {
+            font-family: 'Lobster', cursive;
+            font-size: 4rem;
+            margin: 0;
+            position: fixed;
+            left: 100px;
+            top: 40px;
+            color: #fcbc05;
+            font-weight: 100;
+        }
+
+        .bImg {
+            position: fixed;
+            left: 340px;
+            top: 170px;
+        }
+
+        .text {
+            position: fixed;
+            left: 110px;
+            top: 320px;
+            font-family: 'Noto Sans KR';
+            font-weight: 600;
+            font-size: 20rem;
+            color: #fcbc05;
+            line-height: 4rem;
+        }
+
+        .Stext {
+            position: fixed;
+            left: 780px;
+            top: 320px;
+            font-family: 'Noto Sans KR';
+            font-weight: 600;
+            font-size: 20rem;
+            color: #fcbc05;
+            line-height: 4rem;
+        }
+
+        svg {
+            display: block;
+            z-index: 100;
+            position: absolute;
+            bottom: 12vh;
+            padding-top: 2rem;
+            cursor: url(images/bigMac_mini.png) 0 -24, auto;
+        }
+
+        .yAxis {
+            display: none;
+        }
+
+        .xAxis .domain {
+            display: none;
+        }
+
+        .xAxis>.tick>text {
+            fill: white;
+            opacity: 0.8;
+        }
+
+        .innerG text {
+            font-family: 'Lobster', cursive;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>2017 Big Mac Index</h1>
+
+    <div class="burgers">
+        <span class="text">A</span>
+        <img class="bImg" src="images/bigMac_img.png">
+        <span class="Stext">PAY</span></div>
+    <svg>
+        <g class="imgG"></g>
+        </svg>
+    <script src='//d3js.org/d3.v4.min.js'></script>
+    <script src='bigMac.js'></script>
+</body>
+
+</html>

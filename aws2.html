@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>aws2</title>
+    <style>
+        body {
+            background-color: #61585e;
+        }
+
+        .domain {
+            opacity: 0.4;
+        }
+
+        .tick text {
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .formBox {
+            position: relative;
+            width: 2rem;
+            top: 4rem;
+            left: 2rem;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <form class='formBox'>
+        <div class='options'>
+            <select id='countries' title='select country'>
+     </select>
+        </div>
+
+    </form>
+    <svg>
+        <g class='xAxis'></g>
+        <g class='yAxis'></g>
+        <g class='lineG'></g>
+        <g class='imaG'></g>
+    </svg>
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+    <script src='aws2.js'></script>
+</body>
+
+</html>

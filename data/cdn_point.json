@@ -1,0 +1,340 @@
+{
+  "type": " cdn_point",
+  "features": [{
+      "type": "Feature",
+      "id": "Origin Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-120, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-100, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-80.9195109, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-130, 55]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-110, 55]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-90.9195109, 55]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70.9195109, 55]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-160, 65]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-140, 65]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-65, 65]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5, 50]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10, 50]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [25, 50]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [40, 50]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [55, 60]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [70, 60]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [110, 50]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [125, 50]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [140, 50]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [135, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-10, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [35, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Origin Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [50, 40]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120, 60]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Origin Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-105, 20]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-80, 20]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-15, 15]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [0, 15]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [140, 15]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [55, 15]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [85, 15]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100, 15]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [55, 28]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [75, 28]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Origin Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-45, 0]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-80, 0]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Origin Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-45, -20]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "User",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-70, -20]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Edge Server",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-67, -54]
+      }
+    }
+  ]
+}

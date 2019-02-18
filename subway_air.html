@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>지하철 공기질</title>
+    <style>
+        @import url(//fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-family: 'Nanum Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 0.75rem;
+        }
+
+        #chart {
+            width: 1200px;
+            height: 1200px;
+            position: absolute;
+            top: 4rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        svg {
+            shape-rendering: crispEdges;
+        }
+
+        #value {
+            display: none;
+        }
+
+        #tooltip {
+            position: absolute;
+            height: auto;
+            padding: 5px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(190, 190, 190, 0.9);
+            font-weight: 200;
+            font-size: 0.7rem;
+        }
+
+        #tooltip.hidden {
+            display: none;
+        }
+
+        .h1 {
+            position: absolute;
+            top: 0;
+            left: 3.2rem;
+            font-size: 2.5rem;
+            /*			font-weight:bold;*/
+        }
+
+        .x text {
+            display: none;
+        }
+
+        .y text {
+            font-size: 0.7rem !important;
+            alignment-baseline: central;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: rgb(220, 220, 220);
+            shape-rendering: crispEdges;
+            stroke-dasharray: 1, 1;
+        }
+
+        /*       	.domain {display:none;}*/
+
+        /*        .x .domain {display:none;}      */
+    </style>
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+
+    <svg id='chart'>
+		<foreignobject class='html' width='800' height='100'>
+			<div class='h1'>Seoul Subway Air Pollution</div>
+			<div id='tooltip' class='hidden'>
+			</div>
+		</foreignobject>
+	</svg>  
+    <script>
+        //--------------------------------------Data---------------------------------------------
+        var dataSet = [];
+        var lineNames = [];
+        var metrics = ['PM10', 'CO2', 'HCHO', 'CO', 'NO2', 'Rn', 'TVOC', '석면', 'O3'];
+        var stopNames = [];
+        var maxs = [];
+
+        // Bad
+        // line, stop, co2, no2, o3
+        // 1     X     0    0    0
+
+        // Good (tidy data)
+        // line, stop, metric, value
+        // 1     X     co2     0
+        // 1     X     no2     0
+        // 1     X     o3      0
+
+        //		 <p><span id='value'>
+        //        단위,,,'㎍/㎥','ppm','㎍/㎥','ppm','ppm','Bq/㎥','㎍/㎥','개/cc','ppm'
+        //        기준,권고값,,140,1000,100,9,0.05,14.8,500,0.01,0.06
+        //        기준,전체평균,,90.7 ,556 ,11.9 ,0.9 ,0.026 ,17.3 ,168.8 ,0.01,0.013  </span></p>
+
+        d3.csv('data/서울지하철역별 공기질.csv', function(err, trainAir) {
+            var tidyData = [];
+            trainAir.forEach(function(row) {
+                for (var i = 0; i < metrics.length; i++) {
+                    var newRow = {
+                        line: row['line'],
+                        Stop: row['Stop'],
+                        date: row['date'],
+                        metric: metrics[i],
+                        value: +row[metrics[i]]
+                    };
+                    tidyData.push(newRow);
+                }
+            });
+
+            lineNames = d3.set(tidyData.map(function(d) {
+                return d.line;
+            })).values();
+            stopNames = d3.set(tidyData.map(function(d) {
+                return d.Stop;
+            })).values();
+            for (var i = 0; i < metrics.length; i++) {
+                var max = [0, d3.max(trainAir, function(d) {
+                    return +d[metrics[i]];
+                })];
+                maxs.push(max);
+            }
+
+            dataSet = d3.nest()
+                .key(function(d) {
+                    return d.metric;
+                })
+                .entries(tidyData);
+            redraw();
+
+        });
+
+        var redraw = function() {
+            console.log(dataSet);
+            MARGIN = {
+                TOP: 0,
+                LEFT: 0,
+                RIGHT: 10,
+                BOTTOM: 0
+            };
+
+            var width = 1100;
+            var height = 400;
+
+            var colorScale = d3.scale.ordinal()
+                .domain(lineNames)
+                .range(['#44496b', '#57b057', '#f78d41', '#92d4ee']);
+
+            var xScale = d3.scale.ordinal()
+                .domain(stopNames)
+                .rangeRoundBands([0, width - MARGIN.LEFT - MARGIN.RIGHT], 0.1);
+
+            var yScales = [];
+            for (var i = 0; i < metrics.length; i++) {
+                var scales = d3.scale.linear()
+                    .domain(maxs[i])
+                    .range([height / metrics.length, 0]);
+                yScales.push(scales);
+            }
+
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient('bottom')
+                .tickFormat(function(d) {
+                    return d;
+                })
+                .tickSize(0)
+                .tickPadding(15);
+
+            var yAxises = [];
+            for (var i = 0; i < metrics.length; i++) {
+                var axis = d3.svg.axis()
+                    .scale(yScales[i])
+                    .orient('right')
+                    .ticks(4)
+                    .tickSize(0)
+                    .tickPadding(1050);
+                yAxises.push(axis);
+            }
+
+            var rowYBand = d3.scale.ordinal()
+                .domain(metrics)
+                .rangeBands([0, height + 200], 0.5);
+
+            var row = d3.select('#chart')
+                .append('g')
+                .attr('class', 'rowG')
+                .attr('transform', 'translate(0,110)');
+
+            var rowSel = row.selectAll('g.row').data(dataSet);
+
+            rowSel
+                .enter()
+                .append('g')
+                .attr('width', width)
+                .attr('class', function(d) {
+                    return 'row ' + d.key;
+                })
+                .each(function(d, i) {
+                    d3.select(this)
+                        .append('g')
+                        .attr('class', function(d) {
+                            return d.key + 'yAxis';
+                        })
+                        .style('stroke-width', 1)
+                        .attr('transform', 'translate(0,-45)')
+                        .style('z-index', '1000')
+                        .call(yAxises[i]);
+                })
+                .append('g')
+                .attr('class', 'x axis')
+                .call(xAxis);
+
+            rowSel
+                .exit()
+                .remove();
+
+            rowSel
+                .attr('transform', function(d, i, j) {
+                    return 'translate(' + 70 + ',' + rowYBand(d.key) * 1.9 + ' )'; //()안에는 도메인이 들어가야 합니다.
+                })
+                .append('text')
+                .text(function(d) {
+                    return d.key;
+                })
+                .style('alignment-baseline', 'central')
+                .style('font-weight', '500')
+                .style('font-size', '0.85rem')
+                .attr('dx', '-15')
+                .attr('y', '-5');
+
+            var stopG = rowSel.append('g')
+                .attr('class', 'stop')
+                .attr('transform', 'translate(40,0)');
+
+            var stopSel = stopG.selectAll('rect').data(function(d) {
+                return d.values;
+            });
+
+            stopSel
+                .enter()
+                //				.append('g')
+                //				.attr('class', 'stop')
+                .append('rect')
+                .attr('class', function(d) {
+                    return d.key;
+                })
+                .attr('x', function(d, i) {
+                    return xScale.rangeBand() * i + i;
+                })
+                .attr('y', function(d, i, j) {
+                    return -yScales[j](d.value);
+                }) //반대로 채워준다고 생각하면 됨 / function(d,i,j){return - yScales[j](d.value);}
+                .attr('height', function(d, i, j) {
+                    return yScales[j](d.value);
+                }) //d는 데이터셋,
+                //			i는 네스트(matric) 안에있는 것들의 갯수(이 경우는 스탑), j는 네스트의 갯수 i를 시작으로 위로 올라갈수록 위 단계의 묶음의 갯수가 된다.
+                .attr('width', xScale.rangeBand()) //이것이 band로 나눠진 너비
+                .style('fill', function(d) {
+                    return colorScale(d.line);
+                })
+                //				.attr('opacity',0.85)
+                .on('mouseover', function(d) {
+
+                    coords = d3.event;
+                    console.log(coords);
+                    d3.select('#tooltip')
+                        .classed('hidden', false)
+                        .style('left', coords.screenX + 'px')
+                        .style('top', coords.screenY - 100 + 'px')
+                        .text(d.Stop);
+                })
+                .on('mouseout', function(d) {
+                    d3.select('#tooltip').classed('hidden', true);
+                });
+
+            var colorBar = d3.scale.ordinal()
+                .domain(colorScale.range())
+                .rangeRoundBands([0, 200]);
+
+            var barG = d3.select('#chart')
+                .append('g')
+                .attr('class', 'barG')
+                .attr('transform', 'translate(910,50)');
+
+            var bar = barG.selectAll('rect.bar').data(colorBar.domain());
+
+            bar.enter()
+                .append('rect')
+                .attr('class', 'bar')
+                .style('fill', function(d) {
+                    return d;
+                })
+                .attr('x', function(d) {
+                    return colorBar(d);
+                }) //이게 x값이 나옴.
+                .attr('y', 0)
+                .attr('width', colorBar.rangeBand()) //너비 상수
+                .attr('height', 10);
+
+            bar.enter()
+                .append('text')
+                .attr('x', function(d) {
+                    return colorBar(d);
+                })
+                .attr('y', -7)
+                .data(['1호선', '2호선', '3호선', '4호선'])
+                .text(function(d, i, j) {
+                    return d[j] + '호선';
+                })
+                .style('font-size', '0.7rem');
+
+            //            var MetricG = [];
+            //            var perMetric = [];
+            //
+            //            for(var i = 0; i <metrics.length; i++) {
+            //                var G = d3.select('g.' + metrics[i]).selectAll('g')
+            //                        .data(dataSet[i]);
+            //                MetricG.push(G);
+            //
+            //                var Rect = MetricG[i].select('rect')
+            //                        .data(function(d){
+            //                            console.log(d);
+            //                             return d.values;
+            //                         });
+            //            };
+            //
+            //            var Rectbinding =  Rect.select('rect')
+            //                                .data(function(d){
+            //                                    return d.values;
+            //                                })
+            //                              ;
+            //            Rectbinding
+            //                .enter()
+            //                .append('rect')
+            //                .attr('class',function(d){return d.key;})
+            //                .attr('x',function(d,i){return width/102*i;})
+            //                .attr('y',0)//반대로 채워준다고 생각하면 됨
+            //                .attr('height',function(d){
+            //                    console.log(d);
+            //                    return d.value;
+            //                })
+            //                .attr('d',function(d){return d.values;})
+            //                .attr('width', xScale.rangeBand())//이것이 band로 나눠진 너비
+            //                .style('fill', function(d){
+            //                        console.log(d);
+            //                    return colorScale(d.line);
+            //                })
+            //                .append('title')
+            //                    .text(function(d){
+            //                        return d.Stop});
+        };
+        //        //bl.ocks.org/mbostock/79a82f4b9bffb69d89ae
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>노선별 탑승 인원</title>
+    <!-- <meta name="viewport" content="initial-scale=1, width=device-width"> -->
+    <style>
+        @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+        body {
+            background-color: #f3f3f3;
+        }
+
+        h1 {
+            position: absolute;
+            top: 2rem;
+            left: 12vw;
+            right: 12vw;
+            font-size: 2.5rem;
+        }
+
+        .mouseOver {
+            font-size: 2rem;
+        }
+
+        .chart {
+            display: block;
+            margin: 11vw;
+            margin-top: 12rem;
+            margin-bottom: 2rem;
+        }
+
+        .xAxis .tick>text {
+            opacity: 0;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .yAxis .tick>line {
+            opacity: 0.1;
+        }
+
+        .yAxis>.domain {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>
+        지하철 노선별 탑승인원 <span class="mouseOver"></span></h1>
+    <form class='formBox'>
+        <div class='options'>
+            <select id='date' title='date'>
+     </select>
+        </div>
+    </form>
+    <svg class="chart">
+  </svg>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="subway_people.js"></script>
+</body>
+
+</html>

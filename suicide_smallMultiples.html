@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>국가별 자살비율 증감</title>
+        <style>
+            @import url(//fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+            body {
+                font-family: 'Roboto', sans-serif;
+                font-size:0.4rem;
+            }
+            
+        #chart {
+            position: absolute;
+            top:5rem;
+            left:3.2rem;
+            right:10vw;
+            height:500px;
+            }
+        .axis path, .axis line {
+            fill: none;
+            stroke: rgba(100,100,100,0.6);
+            shape-rendering: crispEdges;
+            }
+        .axis text {
+            fill:rgba(150,150,150,0.7); 
+            } 
+            p{
+            font-size:2rem;
+            position: absolute;
+            top:2rem;
+            left:8rem;}
+            
+            .number{font-size:1rem;}
+        </style>
+        <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        
+    </head>
+    <body>
+        <p>Suicide Rates<span class="number">&nbsp;&nbsp; Per 100,000 persons</span></p>
+        <svg id="chart"> </svg>
+        
+        
+        
+        <script>
+
+    //----------------------------------------Data---------------------------------------------
+        var dataSet = [];
+        var yearExtent = [];
+        var valueExtent = [];
+        var Female = [];
+        var Male = [];
+        var Suicide = d3.csv('data/suicide_rate.csv', function (err, suicide) {
+            suicide.forEach(function (row) {
+                row['ReferenceArea'] = row['ReferenceArea'];
+                row['Sex'] = row['Sex'];
+                row['Value'] = +row['Value']; 
+                row['TimePeriod'] = new Date(+row['TimePeriod'], 0, 1);
+            });
+                
+            var myCountries = ['United States','United Kingdom','China','Denmark','Germany','India','Korea','Italy','France','Japan','Canada','Greece','Sweden','Brazil','Mexico','Russian Federation'];
+            var pickCountries = suicide.filter(function (row) {
+                for(var i = 0; i < myCountries.length; i++) {
+                    if(row['ReferenceArea'] === myCountries[i]) return true;
+                }
+                return false;
+            });
+            
+            yearExtent = d3.extent(pickCountries, function(d) {return d.TimePeriod;});
+            valueExtent = [0, d3.max(pickCountries, function(d) {return d.Value;})];
+            
+            var Female = pickCountries.filter(function (row) {
+                    return row['Sex'] === 'Female';
+                });
+            
+            var Male = pickCountries.filter(function (row) {
+                    return row['Sex'] === 'Male';
+                });
+            
+            
+            var Fenest = d3.nest()
+            .key(function(d){
+                return d.ReferenceArea;
+                
+            })
+            .entries(Female);
+            
+            d3.map
+            
+            
+            var Mnest = d3.nest()
+            .key(function(d){
+                return d.ReferenceArea;
+                
+            })
+            .entries(Male);
+            
+            dataSet = Fenest;
+            MaleDataset = Mnest;  
+            
+            console.log(dataSet);
+            
+            redraw();    
+        }); 
+            
+        
+            var redraw = function(){
+                    
+            var MARGIN = {
+                    TOP: 70
+                , LEFT: 100
+                , RIGHT: 100
+                , BOTTOM: 0
+            , }
+            
+            
+            var padding = 60;
+            var Width = 1000;
+            var Height = 450;
+    ////----------------------------------------column----------------------------------------
+            d3.select('#chart')
+                .attr('height',Height + 100);
+                
+            var columnSel = d3.select('#chart')
+                .attr("width", Width+100)
+                .attr("height", Height+200)
+                .selectAll('g.column').data(dataSet);
+
+            columnSel.enter()
+                .append('g')
+                .attr('class', function (d) {
+                    return 'column ' + d.key;
+                });
+                    
+            columnSel.exit().remove();
+            columnSel.attr('transform', function (d,i) {
+                return 'translate(' + ( Math.floor(i%5)* (Width/5) + MARGIN.LEFT )+ ', '+ ((Height/3)* Math.floor(i/5) +  MARGIN.TOP  )+ ')';
+            });
+            
+                            
+            var xScale = d3.scale.linear()
+                .domain(yearExtent)
+                .rangeRound([padding, (Width/5) - padding]);
+            var yScale = d3.scale.linear()
+                .domain(valueExtent)
+                .rangeRound([(Height/3) - padding*0.85 , padding*0.85]);
+
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient('bottom')
+                .ticks(d3.time.year)
+                .tickValues(yearExtent)
+                .tickFormat(d3.time.format('%Y'))
+                .tickSize(0)
+                .tickPadding(8);
+            
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient('left')
+                .tickValues([10,30,50])
+                .tickPadding(10)
+                .tickSize(0); 
+            
+            columnSel
+                .append('g')
+                .attr('class', 'axis x')
+                .attr("transform", "translate(  "+ - (padding) +" ," + yScale.range()[0] + ")")
+                .style('stroke-width','1')
+                .style('color','rgb(240,240,240)') 
+                .call(xAxis)
+                .append("text")
+                .attr("y", -69)
+                .attr("x", padding-22)
+                .style("text-anchor", "start")
+                .style("font-weight", "bold")
+                .style('fill','black')
+                .style('font-size','0.8rem')
+                .style('opacity','0.87')
+                .text(function (d){return d.key; });
+            
+            columnSel
+                .append('g')
+                .attr('class', 'axis y')
+                .style('stroke-width','0')
+                .style('color','rgb(200,200,200)')
+                .call(yAxis);     
+                
+            var dataLine = d3.svg.line()
+                .x(function(d) { return xScale(d.TimePeriod); })
+                .y(function(d) { return yScale(d.Value); })
+                .interpolate("monotone");  
+        
+            
+        columnSel
+                .append('path')
+                .attr('class', 'dataF')
+                .attr("transform", "translate(  "+ - (padding) +" ,0)")
+                .style('fill',"none")
+                .style('stroke',"#b86d61")
+                .style('opacity', 0.7)
+                .style('stroke-width',"2.5px")
+                .attr('d', function(d) {
+                    return dataLine(d.values);
+                })
+                .on('mouseover',function(){
+                    
+            
+                    d3.select(this)
+                        .style("opacity",1);
+                    d3.select(this.nextSibling)
+                        .attr("r",3.5);
+                    d3.select(this.nextSibling.nextSibling)
+                        .attr("r",3.7);
+                })
+                .on('mouseout',function(){
+                    d3.select(this).style("opacity",0.7);
+                    d3.select(this.nextSibling).attr("r",3);
+                    d3.select(this.nextSibling.nextSibling)
+                        .attr("r",3);
+                    });      
+            
+            
+                
+            var circle = columnSel
+                .selectAll('circle.number')
+                .data(function(d){return d.values});   
+            
+                
+            circle.enter()
+                .append("circle")
+                .attr("class", "numberFemale")
+                .attr("transform", "translate(  "+ - (padding) +" ,0)")
+                .attr("r", 3 )
+                .style('fill','#b86d61')
+                .on('mouseover', function(d){
+                    
+                    var coords = d3.mouse(this);
+                    var newData= {
+                        x: Math.round( xScale.invert(coords[0])),
+                        y: Math.round( yScale.invert(coords[1]))
+                    };
+                    
+                    d3.select(this)
+                        .style('fill','red');
+                        d3.select(this.firstChild)
+                        .style('opacity',1)
+                        .text('d');
+                
+                })
+                .on('mouseout', function(d){
+                    
+                    
+                });                
+                                
+            circle.exit()
+                .remove();
+            circle
+                .attr("cx", function(d) {return xScale(d.TimePeriod);})
+                .attr("cy", function(d) {return yScale(d.Value);});         
+            
+                circle
+                .append('text')
+                .style('fill','black')
+                .attr('opacity',0);
+                
+            
+    ////-----------------------------------------male----------------------------------------
+            
+            var MlcolumnSel = d3.select('#chart')
+                .attr("width", Width+100)
+                .attr("height", Height)
+                .selectAll('g.mlcolumn').data(MaleDataset);
+
+            MlcolumnSel.enter()
+                .append('g')
+                .attr('class', function (d) {
+                    return 'mlcolumn ' + d.key;
+                });
+                    
+            MlcolumnSel.exit().remove();
+            MlcolumnSel.attr('transform', function (d,i) {
+                return 'translate(' + ( Math.floor(i%5)* (Width/5) + MARGIN.LEFT )+ ', '+ ((Height/3)* Math.floor(i/5) +  MARGIN.TOP  )+ ')';
+            });
+            
+                            
+            var xScale = d3.scale.linear()
+                .domain(yearExtent)
+                .rangeRound([padding, (Width/5) - padding]);
+            var yScale = d3.scale.linear()
+                .domain(valueExtent)
+                .rangeRound([(Height/3) - padding*0.85 , padding*0.85]);//간격을 넓히려면 하이트를 더 큰수로 나눠주면된다.
+
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient('bottom')
+                .ticks(d3.time.year)
+                .tickValues(yearExtent)
+                .tickFormat(d3.time.format('%Y'))
+                .tickSize(0)
+                .tickPadding(8);
+            
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient('left')
+                .tickValues([10,30,50])
+                .tickPadding(10)
+                .tickSize(0); 
+            
+            MlcolumnSel
+                .append('g')
+                .attr('class', 'axis x')
+                .attr("transform", "translate(  "+ - (padding) +" ," + yScale.range()[0] + ")")
+                .style('stroke-width','1')
+                .style('color','rgb(240,240,240)')
+                .call(xAxis);
+                
+            MlcolumnSel
+                .append('g')
+                .attr('class', 'axis y')
+                .style('stroke-width','0')
+                .style('color','rgb(200,200,200)')
+                .call(yAxis);
+                
+            var circle = MlcolumnSel
+                .selectAll('circle')
+                .data(function(d){return d.values});   
+                
+            circle.enter()
+                .append("circle")
+                .attr("class", "numberMale")
+                .attr("transform", "translate(  "+ - (padding) +" ,0)")
+                .attr("r", 3 )
+                .style('fill','#7c8188')
+                ;
+            circle.exit()
+                .remove();
+            circle
+                .attr("cx", function(d) {return xScale(d.TimePeriod);})
+                .attr("cy", function(d) {return yScale(d.Value);});
+                
+                var dataLine = d3.svg.line()
+                    .x(function(d) { return xScale(d.TimePeriod); })
+                    .y(function(d) { return yScale(d.Value); })
+                    .interpolate("monotone");  
+
+                MlcolumnSel
+                    .append('path')
+                    .attr('class', 'data')
+                    .attr("transform", "translate(  "+ - (padding) +" ,0)")
+                    .style('fill',"none")
+                    .style('stroke',"#7c8188")
+                    .style('opacity', 0.7)
+                    .style('stroke-width',"2.5px")
+                    .attr('d', function(d) {
+                        return dataLine(d.values);
+                    })
+                    .on('mouseover',function(){
+                    d3.select(this).style("opacity",1);
+                    d3.selectAll(".numberMale").attr("r",3.7);
+                    })
+                    .on('mouseout',function(){
+                    d3.select(this).style("opacity",0.5);
+                    d3.selectAll(".numberMale").attr("r",3);
+                    });              
+        };                    
+        </script>
+    </body>
+</html>
