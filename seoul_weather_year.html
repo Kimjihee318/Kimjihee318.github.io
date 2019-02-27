@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<meta charset='utf-8'>
+<style>
+    body {
+        font: 10px sans-serif;
+        shape-rendering: crispEdges;
+        position: absolute;
+        top: 3rem;
+        left: 14rem;
+        font-size: 0.5rem;
+    }
+
+    .barChart {
+        position: relative;
+        left: -11rem;
+        top: 2rem;
+    }
+
+    .key path,
+    .key line {
+        fill: none;
+        stroke: #000;
+    }
+
+    .tick text {
+        font-size: 0.7rem;
+    }
+
+    p {
+        font-size: 1.2rem;
+        position: absolute;
+        top: -3rem;
+        left: -10.7rem;
+    }
+
+</style>
+
+<body>
+    <p>Seoul Mean Temperature</p>
+
+    <script src='//d3js.org/d3.v3.min.js'></script>
+    <script>
+        var dateFormat = d3.time.format('%Y-%m-%d');
+        var dataSet = [];
+        var Sweather = d3.csv('data/seoul_weather_year.csv', function(err, weather) {
+            weather.forEach(function(row) {
+                row['aver'] = +row['aver'];
+                row['date'] = dateFormat.parse(row['date']);
+            })
+            dataSet = weather;
+            redraw();
+        });
+
+        var redraw = function() {
+            MARGIN = {
+                TOP: 50,
+                LEFT: 100,
+                RIGHT: 100,
+                BOTTOM: 100
+            };
+
+            var Width = 800;
+            var Height = 80;
+
+            var xScale = d3.time.scale()
+                .domain([new Date(dataSet[0].date),
+                    d3.time.day.offset(new Date(dataSet.length.date), 1)
+                ]) //여기서 1은 offset 안에 있는것이므로 이것을 검색하면 알 수 있다.
+                //day.offset이므로 new Date()에서는 날자를 ,1은 간격을 의미한다.
+                .rangeRound([0, Width - MARGIN.LEFT]);
+
+            var yScale = d3.time.scale()
+                .domain([2010, 2016])
+                .rangeRound([Height - MARGIN.TOP - MARGIN.BOTTOM, 0]);
+
+            var colorScale = d3.scale.quantize()
+                .domain([d3.max(dataSet, function(d) {
+                    return d.aver;
+                }), d3.min(dataSet, function(d) {
+                    return d.aver;
+                })])
+                .range(['#eb3324', '#c64033', '#e4744f', '#f2b06e',
+                    '#fae096', '#ffffc6', '#dded97',
+                    '#b0d678', '#7bba6d', '#489558',
+                    '#2c663c'
+                ]);
+
+            var barX = d3.scale.linear()
+                .domain([d3.max(dataSet, function(d) {
+                    return d.aver;
+                }), d3.min(dataSet, function(d) {
+                    return d.aver;
+                })])
+                .range([0, 200]);
+
+            var tickValues = colorScale.range().map(function(color) {
+                var d = colorScale.invertExtent(color);
+                if (d[0] == null) d[0] = barX.domain()[0];
+                if (d[1] == null) d[1] = barX.domain()[1];
+                return d;
+            });
+
+            var tickValuesToShow = tickValues.map(function(d) {
+                return d[0];
+            });
+
+            tickValuesToShow.push(tickValues[tickValues.length - 1][1]);
+
+            var tickFormat = d3.format('.f');
+
+            var barXaxis = d3.svg.axis()
+                .scale(barX)
+                .orient('bottom')
+                .tickSize(0)
+                .tickPadding(20)
+                .tickFormat(tickFormat);
+
+            var barSvg = d3.select('body')
+                .append('svg')
+                .attr('width', 400)
+                .attr('height', 30)
+                .attr('class', 'barChart');
+
+
+            var G = barSvg.append('g')
+                .attr('class', 'key')
+                .attr('transform', 'translate(' + 6 + ',0)')
+                .call(barXaxis);
+
+
+            //invertExtent 역함수와 같고, 컬러를 숫자로 매치해서 반대로 수치의 범위를 알려주는 식 
+            G.selectAll('rect.scale-bar')
+                .data(tickValues)
+                .enter()
+                .append('rect')
+                .attr('class', 'scale-bar')
+                .attr('height', 7)
+                .attr('x', function(d) {
+                    return barX(d[0]);
+                })
+                .attr('width', function(d) {
+                    return barX(d[1]) - barX(d[0]);
+                })
+                .style('fill', function(d) {
+                    return colorScale(d[0]);
+                });
+
+            G.call(barXaxis)
+                .append('text')
+                .attr('class', 'caption')
+                .attr('y', -6)
+                .text('Range of color');
+
+            var cellSize = Height / 12;
+
+            var svg = d3.select('body')
+                .selectAll('svg.year')
+                .data(d3.range(2010, 2016))
+                .enter()
+                .append('svg')
+                .attr('class', 'year')
+                .attr('width', Width)
+                .attr('height', Height)
+                .style('margin-bottom', 10)
+                .attr('transform', 'translate(' + MARGIN.LEFT + ',0)')
+                .append('g')
+                .attr('transform', 'translate(' + MARGIN.LEFT + ',   0)');
+
+            svg.append('text')
+                .attr('transform', 'translate(' + -30 + ',' + cellSize * 1.7 + ')')
+                .style('text-anchor', 'start')
+                .style('font-size', '0.7rem')
+                .text(function(d) {
+                    return d;
+                });
+
+            var rect = svg.selectAll('.day')
+                .data(function(d, i) {
+                    return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1), 1);
+                })
+                .enter()
+                .append('rect')
+                .attr('class', 'day')
+                .attr('width', cellSize)
+                .attr('height', cellSize)
+                .attr('x', function(d) {
+                    return d.getDate(d) * cellSize;
+                })
+                .attr('y', function(d) {
+                    return d.getMonth() * cellSize;
+
+                })
+                .datum(dateFormat);
+
+            rect.style('fill', function(d, i) {
+                return colorScale(dataSet[(+d.substr(0, 4) - 2010) * 365 + i].aver);
+            });
+
+
+            rect.append('title')
+                .text(function(d, i) {
+                    return d + ', ' + dataSet[i].aver + 'º';
+                });
+        };
+
+    </script>
