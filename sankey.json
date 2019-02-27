@@ -1,0 +1,106 @@
+{
+    "nodes": [
+        {
+            "name": "S매장"
+    }, {
+            "name": "E매장"
+    }, {
+            "name": "C매장"
+    }, {
+            "name": "TS매장"
+    }, {
+            "name": "CB매장"
+    }, {
+            "name": "H매장"
+    }, {
+            "name": "T매장"
+    }, {
+            "name": "A매장"
+    },
+        {
+            "name": "P매장"
+    },
+        {
+            "name": "Y매장"
+    },
+        {
+            "name": "B매장"
+    },
+        {
+            "name": "C매장"
+    },
+        {
+            "name": "CBY매장"
+    },
+        {
+            "name": "PB매장"
+    }],
+    "links": [
+        {
+            "source": 0,
+            "target": 1,
+            "value": 2347
+ },
+        {
+            "source": 0,
+            "target": 2,
+            "value": 2379
+ },
+        {
+            "source": 0,
+            "target": 3,
+            "value": 2373
+ },
+        {
+            "source": 0,
+            "target": 4,
+            "value": 1206
+ },
+        {
+            "source": 0,
+            "target": 5,
+            "value": 1546
+ },
+        {
+            "source": 0,
+            "target": 6,
+            "value": 1508
+ },
+        {
+            "source": 0,
+            "target": 7,
+            "value": 894
+ },
+        {
+            "source": 0,
+            "target": 8,
+            "value": 830
+ },
+        {
+            "source": 0,
+            "target": 9,
+            "value": 583
+ },
+        {
+            "source": 0,
+            "target": 10,
+            "value": 967
+ },
+        {
+            "source": 0,
+            "target": 11,
+            "value": 216
+ },
+        {
+            "source": 0,
+            "target": 12,
+            "value": 564
+ },
+        {
+            "source": 0,
+            "target": 13,
+            "value": 1230
+ }
+
+    ]
+}

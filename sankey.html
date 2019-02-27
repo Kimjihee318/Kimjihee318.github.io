@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        @import url(//fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+        svg {
+            position: absolute;
+            top: 10rem;
+            left: 4rem;
+        }
+        
+        h1 {
+            position: absolute;
+            top: 3rem;
+            left: 4rem;
+            font-size: 2.5rem;
+            font-family: 'Nanum Pen Script';
+            font-weight: normal;
+        }
+
+    </style>
+    <svg width="400" height="400"></svg>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="//unpkg.com/d3-sankey@0.6"></script>
+</head>
+
+<body>
+    <h1> 커피 매장별 이동 분석</h1>
+    <script>
+        var svg = d3.select("svg"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height");
+
+        var formatNumber = d3.format(",.0f"),
+            format = function(d) {
+                return formatNumber(d) + " TWh";
+            };
+
+        var sankey = d3.sankey()
+            .nodeWidth(12)
+            .nodePadding(10)
+            .extent([
+                [1, 1],
+                [width - 1, height - 6]
+            ]);
+
+        var link = svg.append("g")
+            .attr("class", "links")
+            .attr("fill", "none")
+            .attr("stroke", "#fec84e")
+            .attr("stroke-opacity", 0.2)
+            .selectAll("path");
+
+        var node = svg.append("g")
+            .attr("class", "nodes")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 12)
+            .selectAll("g");
+
+        d3.json("sankey.json", function(error, energy) {
+            if (error) throw error;
+            console.log(energy);
+            sankey(energy);
+
+            link = link
+                .data(energy.links)
+                .enter().append("path")
+                .attr("d", d3.sankeyLinkHorizontal())
+                .attr("stroke-width", function(d) {
+                    return Math.max(1, d.width);
+                });
+
+            link.append("title")
+                .text(function(d) {
+                    return d.source.name + " → " + d.target.name + "\n" + format(d.value);
+                });
+
+            node = node
+                .data(energy.nodes)
+                .enter().append("g");
+
+            node.append("rect")
+                .attr("x", function(d) {
+                    return d.x0;
+                })
+                .attr("y", function(d) {
+                    return d.y0;
+                })
+                .attr("height", function(d) {
+                    return d.y1 - d.y0;
+                })
+                .attr("width", function(d) {
+                    return d.x1 - d.x0;
+                })
+                .attr("fill", "#fec84e");
+
+            node.append("text")
+                .attr("x", function(d) {
+                    return d.x0 - 6;
+                })
+                .attr("y", function(d) {
+                    return (d.y1 + d.y0) / 2;
+                })
+                .attr("dy", "0.35em")
+                .attr("text-anchor", "end")
+                .text(function(d) {
+                    return d.name;
+                })
+                .filter(function(d) {
+                    return d.x0 < width / 2;
+                })
+                .attr("x", function(d) {
+                    return d.x1 + 6;
+                })
+                .attr("text-anchor", "start");
+
+            node.append("title")
+                .text(function(d) {
+                    return d.name + "\n" + format(d.value);
+                });
+        });
+
+    </script>
+</body>
+
+</html>
