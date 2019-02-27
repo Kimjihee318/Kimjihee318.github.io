@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>D3 animation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
+    <script src="https://d3js.org/topojson.v0.min.js"></script>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<style>
+    @import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
+    @import url('https://fonts.googleapis.com/css?family=Exo+2:500,600|Exo:400,500,600;');
+
+</style>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+    <div class="wrapper_web d-none d-sm-block">
+        <nav class="navbar navbar-expand-sm navbar navbar-light fixed-top z-depth-5 p-0 pl-sm-3 bg-white pb-sm-0">
+            <ul class="navbar-nav logos d-flex align-self-start pl-0">
+                <li class="nav-item mr-1 p-0">
+                    <a class="nav-link" href="#section1">H<span class="nav_ex_2">y</span>per Billing</a>
+                </li>
+                <li class="nav-item mr-2 p-0">
+                    <a class="nav-link" href="#section2">H<span class="nav_ex_2">y</span>per CDN</a>
+                </li>
+                <li class="nav-item mr-2 p-0">
+                    <a class="nav-link" href="#section3">H<span class="nav_ex_2">y</span>per Sealing</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav flex-column flex-md-row ml-md-auto d-md-flex m r-md-3">
+                <li class="nav-item">
+                    <form class="nav-link form-inline float-none float-sm-right ml-4 mr-4 " href="#" action="/action_page.php">
+                        <input type="email" class="form-control mb-sm-0 mr-sm-1 p-sm-1" id="email" placeholder="Email" name="email" autofocus>
+                        <input type="password" class="form-control mb-sm-0 mr-sm-1 p-sm-1" id="pwd" placeholder="Password" name="pswd">
+                        <input type="otp" class="form-control mb-sm-0 mr-sm-1 p-sm-1" id="otp" placeholder="OTP" name="opt">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <button type="submit" title="Login failed." class="btn btn-inline m-sm-0 mr-sm-2 ml-sm-2 p-sm-1 pl-sm-3 pr-sm-3" role="button" data-placement="bottom" data-toggle="popover" data-trigger="focus" data-content="Please note that if you fail to log in more than 5 times, your account will be locked.">log in</button>
+                        <a class="forgot" href="#">Forgot Your Password?</a>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+        <div class="middle">
+            <div id="section1" class="container-fluid section" data-function="billingDraw">
+                <div id="billing">
+                    <svg id="map">
+                        <g class="textG">
+                            <text class="e_font">
+                                <tspan class="ex_2" x= "10" dy="2.1rem">Hyper</tspan>
+                                <tspan x= "11.1rem" dy="0">Billing</tspan>
+                                <tspan x= "10" dy="4.2rem">AWS 빌링 서비스</tspan>
+                            </text>
+                            <text class="detailT">
+                                <tspan x= "10" dy="2.1rem">국내 유일 원화 세금 계산서 발행</tspan>
+                                <tspan x= "10" dy="2.1rem">결제 상세내역 Report 지원</tspan>
+                                <tspan x= "10" dy="2.1rem">빌링 시스템 제공</tspan>
+                            </text>
+                        </g>
+                        <g class="mapPath">
+                        </g>
+                        <g class="lineG">
+                        </g>
+                        <g class="arcsG">
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div id="section2" class="container-fluid section" data-function="cdnDraw">
+                <div id="cdn_div">
+                    <svg id="cdn">
+                  <g class="CDN">
+                  <g class="CDN_map"></g>
+                  <g class="CDN_marker"></g>
+                  </g>
+                  <g class="textG">
+                    <text class="e_font">
+                      <tspan class="ex_2" x= "10" dy="2.1rem">Hyper</tspan>
+                      <tspan x= "11.1rem" dy="0">CDN</tspan>
+                      <tspan x= "10" dy="4.2rem">CDN 서비스</tspan>
+                    </text>
+                    <text class="detailT">
+                      <tspan x= "10" dy="2.1rem">복수 CDN벤더를 이용한 퍼포먼스 향상</tspan>
+                      <tspan x= "10" dy="2.1rem">Route53을 이용한 안정적인 로드밸런싱</tspan>
+                      <tspan x= "10" dy="2.1rem">빠른 장애대응</tspan>
+                    </text>
+                  </g>
+                </svg>
+                </div>
+            </div>
+            <div id="section3" class="container-fluid section" data-function="sealingDraw">
+                <div id="seal">
+                    <svg id="sealing">
+                    <g class="images"></g>
+                    <g class="textG">
+                      <text class="e_font">
+                        <tspan class="ex_2" x= "10" dy="2.1rem">Hyper</tspan>
+                        <tspan x= "11.1rem" dy="0">Sealing</tspan>
+                        <tspan x= "10" dy="4.2rem">간편한 모바일 게임 보안</tspan>
+                      </text>
+                      <text class="detailT">
+                        <tspan x= "10" dy="2.1rem">빠르고 간편한 적용</tspan>
+                        <tspan x= "10" dy="2.1rem">안정적이며 비교할 수 없는 보안</tspan>
+                        <tspan x= "10" dy="2.1rem">분석 및 모니터링 데이터 제공</tspan>
+                      </text>
+                    </g>
+              </svg>
+                </div>
+            </div>
+        </div>
+        <div class="align-self-end mt-sm-0 footer w-100 p-3 pt-sm-5 pb-sm-5 mt-5 bg-light">
+            <div class="mt-sm-0 pt-3 pt-sm-0 pb-3 pb-sm-0">
+                © 2015 MEGAZONE Corp. All Right Reserved &nbsp;&nbsp;&nbsp; GALA B/D Yeoksam-dong Gangnam-gu SEOUL 135-080 KOREA &nbsp; HELP : mz@awssupport.net / 1644-2243
+            </div>
+        </div>
+    </div>
+    <div class="wrapper_mobile d-block d-sm-none pt-5 h-100 d-flex flex-column pl-4 pr-4">
+        <form class="nav-link form-inline float-none text-center mt-5" href="#" action="/action_page.php">
+            <div class="mb-4 logo" style="font-weight:600;"><a>H<span class="m_ex_2">y</span>per Series</a></div>
+            <input type="email" class="form-control mb-3 p-2 text-center" id="email_mobile" placeholder="Email" name="email">
+            <input type="password" class="form-control mb-3 p-2 text-center " id="pwd_mobile" placeholder="Password" name="pswd">
+            <input type="otp" class="form-control mb-3 p-2 text-center" id="otp_mobile" placeholder="OTP" name="opt">
+            <button type="button" class="close-sm" data-dismiss="alert">&times;</button>
+            <button type="submit" title="Login failed." class="btn btn-block m-sm-0 mr-sm-2 p-sm-1 pl-sm-3 pr-sm-3" role="button" data-placement="bottom" data-toggle="popover" data-trigger="focus" data-content="Please note that if you fail to log in more than 5 times, your account will be locked.">log in</button>
+            <div class="text-left"><a class="forgot" href="#">Forgot Your Password?</a></div>
+        </form>
+        <div class="m_footer mt-auto pt-3 pt-sm-0 pb-4">
+            © 2015 MEGAZONE Corp. All Right Reserved. GALA B/D Yeoksam-dong Gangnam-gu SEOUL 135-080 KOREA HELP: mz@awssupport.net / 1644-2243
+        </div>
+    </div>
+    <script>
+        var padding_top = (window.innerHeight - 760) * 0.5 + 80;
+        d3.selectAll('.section>div').style('padding-top', padding_top + 'px');
+        $(window.document).ready(function() {
+            $('[data-toggle="popover"]').popover();
+        });
+
+    </script>
+    <script src='js/billing_ani.js'></script>
+    <script src='js/cdn_ani.js'></script>
+    <script src='js/sealing_ani.js'></script>
+    <script src='js/scrollspy.js'></script>
+</body>
+
+</html>

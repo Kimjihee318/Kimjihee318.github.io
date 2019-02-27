@@ -1,0 +1,242 @@
+{
+  "type": " region",
+  "features": [{
+      "type": "Feature",
+      "id": "Ohio",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-83.7901467, 40.3598667],
+        "estimation": [-83.7901467, 1]
+      },
+      "properties": {
+        "name": "오하이오",
+        "size": 4447100,
+        "values": [70, 10, 20]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Virginia",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-80.5418383, 37.9980656],
+        "estimation": [-83.7901467, 4]
+      },
+      "properties": {
+        "name": "버지니아 북부",
+        "size": 4447,
+        "values": [200, 200, 200]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Oregon",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.7042638, 44.1399669],
+        "estimation": [-83.7901467, 5]
+      },
+      "properties": {
+        "name": "오리곤",
+        "size": 444710,
+        "values": [300, 200, 200]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "California",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-121.5490453, 37.2480242],
+        "estimation": [-83.7901467, 20]
+      },
+      "properties": {
+        "name": "캘리포니아 북부",
+        "size": 47100,
+        "values": [40, 5, 15]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Montreal",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-73.8003414, 45.5580206],
+        "estimation": [-83.7901467, 38]
+      },
+      "properties": {
+        "name": "몬트리올",
+        "size": 47100,
+        "values": [50, 30, 20]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "São Paulo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-46.7353807, -23.6823494],
+        "estimation": [-83.7901467, 42]
+      },
+      "properties": {
+        "name": "상파울루",
+        "size": 7100,
+        "values": [4, 2, 9]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Ireland",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-9.3385294, 53.3781516],
+        "estimation": [-83.7901467, 53]
+      },
+      "properties": {
+        "name": "아일랜드",
+        "size": 44,
+        "values": [14, 16, 5]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Frankfurt",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [8.566525, 50.1211909],
+        "estimation": [-83.7901467, 72]
+      },
+      "properties": {
+        "name": "프랑크푸르트",
+        "size": 4447,
+        "values": [10, 50, 80]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "London",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.2416781, 51.5285582],
+        "estimation": [-83.7901467, 99]
+      },
+      "properties": {
+        "name": "런던",
+        "size": 7100,
+        "values": [40, 80, 30]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Paris",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.3120407, 48.8588536],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "파리",
+        "size": 4400,
+        "values": [100, 13, 54]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Singapore",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.7742106, 1.3139991],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "싱가포르",
+        "size": 100,
+        "values": [10, 8, 1]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Mumbai",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [72.8111468, 19.0822375],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "뭄바이",
+        "size": 7100,
+        "values": [100, 10, 10]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Beijing",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [116.2573784, 39.9387995],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "베이징",
+        "size": 400,
+        "values": [40, 30, 30]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Ningxia",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [104.852238, 37.3046498],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "닝샤",
+        "size": 7100,
+        "values": [1, 2, 3]
+      }
+    }, {
+      "type": "Feature",
+      "id": "Tokyo",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [139.6713415, 35.6691682],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "도쿄",
+        "size": 4100,
+        "values": [100, 20, 10]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Sydney",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [150.7918938, -33.8481647],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "시드니",
+        "size": 400,
+        "values": [40, 40, 20]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "Seoul",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [126.9195109, 37.5650793],
+        "estimation": [-83.7901467, 110]
+      },
+      "properties": {
+        "name": "서울",
+        "size": 7100,
+        "values": [0, 0, 0]
+      }
+    }
+
+  ]
+}
