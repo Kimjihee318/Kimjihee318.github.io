@@ -1,5 +1,5 @@
  dataSet = [];
- d3.csv('./data/coffee_data.csv', function (err, rows) {
+ d3.csv('data/coffee_data.csv', function (err, rows) {
      console.log(row)
      rows.forEach(function (row) {
 
